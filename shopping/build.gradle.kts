@@ -30,14 +30,18 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 	runtimeOnly("org.postgresql:postgresql")
 
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module = "mockito-core")
+	}
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.testcontainers:testcontainers:1.15.3")
 	testImplementation("org.testcontainers:junit-jupiter:1.15.3")
 	testImplementation("org.testcontainers:postgresql:1.15.3")
 	testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.3")
+	testImplementation("io.kotest:kotest-assertions-json:4.4.3")
 	testImplementation("io.rest-assured:rest-assured:4.3.3")
 	testImplementation("io.mockk:mockk:1.11.0")
+	testImplementation("com.ninja-squad:springmockk:3.0.1")
 }
 
 tasks.withType<KotlinCompile> {
