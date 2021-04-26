@@ -33,7 +33,10 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.testcontainers:testcontainers:1.15.3")
+	testImplementation("org.testcontainers:junit-jupiter:1.15.3")
 	testImplementation("org.testcontainers:postgresql:1.15.3")
+	testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.3")
+	testImplementation("io.rest-assured:rest-assured:4.3.3")
 }
 
 tasks.withType<KotlinCompile> {

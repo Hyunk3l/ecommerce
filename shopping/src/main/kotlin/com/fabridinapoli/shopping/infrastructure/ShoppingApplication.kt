@@ -1,4 +1,4 @@
-package com.fabridinapoli.shopping
+package com.fabridinapoli.shopping.infrastructure
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
