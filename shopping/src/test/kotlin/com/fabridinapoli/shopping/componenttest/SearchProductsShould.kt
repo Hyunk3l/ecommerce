@@ -5,6 +5,7 @@ import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured.given
 import java.util.UUID
 import org.apache.http.entity.ContentType
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
@@ -20,6 +21,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 private val PRODUCT_ID = UUID.randomUUID()
 private val SECOND_PRODUCT_ID = UUID.randomUUID()
 
+@Disabled
 @Tag("component")
 @Testcontainers
 @SpringBootTest(classes = [ShoppingApplication::class], webEnvironment = WebEnvironment.RANDOM_PORT)
