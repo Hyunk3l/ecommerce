@@ -1,9 +1,12 @@
 package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 
+import arrow.core.getOrElse
+import arrow.core.right
 import com.fabridinapoli.shopping.application.service.ProductResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
@@ -16,10 +19,14 @@ class SearchController {
 
     @GetMapping("/products")
     fun getProducts(): ResponseEntity<HttpSearchProductResponse> =
-        searchProductsService
-            .invoke()
-            .let { it.toHttpResponse() }
-            .let { ResponseEntity.ok(it) }
+        searchProductsService.invoke()
+            .fold(
+                {
+                    ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build()
+                }, {
+                    it.toHttpResponse()
+                        .let { response -> ResponseEntity.ok(response) }
+                })
 
     private fun SearchProductsResponse.toHttpResponse() =
         HttpSearchProductResponse(products = this.products.toHttpProduct())

@@ -1,22 +1,19 @@
 package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 
+import arrow.core.Either
+import com.fabridinapoli.shopping.application.service.DomainError
 import com.fabridinapoli.shopping.application.service.ProductResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsService
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.assertions.json.CompareOrder
 import io.kotest.assertions.json.shouldEqualJson
-import io.kotest.matchers.nulls.shouldNotBeNull
-import io.kotest.matchers.shouldBe
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
-import io.mockk.mockk
 import java.util.UUID
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 
@@ -46,7 +43,7 @@ class SearchControllerShould {
                 )
             )
         )
-        every { searchProducts.invoke() } returns searchProductsResponse
+        every { searchProducts.invoke() } returns Either.Right(searchProductsResponse)
 
         val response = webTestClient
             .get()
@@ -65,6 +62,20 @@ class SearchControllerShould {
                     ]
                 }
             """.trimIndent(), CompareOrder.Lenient)
+    }
+
+    @Test
+    fun `return a 500 if any error in the use case`() {
+        every { searchProducts.invoke() } returns Either.Left(DomainError("Any error"))
+
+        val response = webTestClient
+            .get()
+            .uri("/products")
+            .exchange()
+
+        response
+            .expectStatus()
+            .is5xxServerError
     }
 
     private fun ProductResponse.toJson() = """
