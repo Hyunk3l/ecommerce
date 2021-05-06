@@ -1,10 +1,10 @@
 package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 
 import arrow.core.Either
-import com.fabridinapoli.shopping.application.service.DomainError
 import com.fabridinapoli.shopping.application.service.ProductResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsService
+import com.fabridinapoli.shopping.domain.model.DomainError
 import com.ninjasquad.springmockk.MockkBean
 import io.kotest.assertions.json.CompareOrder
 import io.kotest.assertions.json.shouldEqualJson

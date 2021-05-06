@@ -2,6 +2,7 @@ package com.fabridinapoli.shopping.application.service
 
 import arrow.core.left
 import arrow.core.right
+import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.Price
 import com.fabridinapoli.shopping.domain.model.Product
 import com.fabridinapoli.shopping.domain.model.ProductId

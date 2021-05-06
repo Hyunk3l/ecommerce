@@ -3,6 +3,7 @@ package com.fabridinapoli.shopping.application.service
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.Product
 import com.fabridinapoli.shopping.domain.model.ProductRepository
 
@@ -27,5 +28,3 @@ class SearchProductsService(private val repository: ProductRepository) {
 data class SearchProductsResponse(val products: List<ProductResponse>)
 
 data class ProductResponse(val id: String, val title: String, val price: Double)
-
-data class DomainError(val message: String)
