@@ -1,13 +1,20 @@
 package com.fabridinapoli.shopping.componenttest
 
+import com.fabridinapoli.shopping.domain.model.Price
+import com.fabridinapoli.shopping.domain.model.Product
+import com.fabridinapoli.shopping.domain.model.ProductId
+import com.fabridinapoli.shopping.domain.model.ProductRepository
+import com.fabridinapoli.shopping.domain.model.Title
 import com.fabridinapoli.shopping.infrastructure.ShoppingApplication
+import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
+import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured.given
 import java.util.UUID
 import org.apache.http.entity.ContentType
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment
@@ -21,12 +28,14 @@ import org.testcontainers.junit.jupiter.Testcontainers
 private val PRODUCT_ID = UUID.randomUUID()
 private val SECOND_PRODUCT_ID = UUID.randomUUID()
 
-@Disabled
 @Tag("component")
 @Testcontainers
 @SpringBootTest(classes = [ShoppingApplication::class], webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class SearchProductsShould {
+
+    @Autowired
+    private lateinit var productRepository: ProductRepository
 
     @LocalServerPort
     val servicePort: Int = 0
@@ -46,6 +55,11 @@ class SearchProductsShould {
 
     @Test
     fun `return a list of products`() {
+        productRepository.save(listOf(
+            Product(ProductId(PRODUCT_ID.toString()), Title("OWC Thunderbolt 3 Dock 14 Ports"), Price(239.00)),
+            Product(ProductId(SECOND_PRODUCT_ID.toString()), Title("OWC Thunderbolt 4 Dock 11 Ports"), Price(269.00))
+        ))
+
         val response = given()
             .contentType(ContentType.APPLICATION_JSON.toString())
             .port(servicePort)
@@ -55,12 +69,11 @@ class SearchProductsShould {
             .extract()
 
         response.statusCode() shouldBe 200
-        response.contentType() shouldBe ContentType.APPLICATION_JSON.toString()
-        response.body() shouldBe """
+        response.body().asString() shouldEqualJson """
                 {
                     "products": [
                         {"id": "$PRODUCT_ID", "title": "OWC Thunderbolt 3 Dock 14 Ports", "price": 239.00},
-                        {"id": "$SECOND_PRODUCT_ID", "title": "OWC Thunderbolt 4 Dock 11 Ports", "price": 269.00},
+                        {"id": "$SECOND_PRODUCT_ID", "title": "OWC Thunderbolt 4 Dock 11 Ports", "price": 269.00}
                     ]
                 }
             """.trimIndent()
