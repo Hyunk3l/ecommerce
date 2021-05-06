@@ -6,7 +6,6 @@ import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.ProductRepository
 import com.fabridinapoli.shopping.domain.model.Title
 import com.fabridinapoli.shopping.infrastructure.ShoppingApplication
-import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
 import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured.given
