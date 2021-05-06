@@ -1,5 +1,6 @@
 package com.fabridinapoli.shopping.application.service
 
+import arrow.core.left
 import arrow.core.right
 import com.fabridinapoli.shopping.domain.model.Price
 import com.fabridinapoli.shopping.domain.model.Product
@@ -26,7 +27,7 @@ class SearchProductsServiceShould : StringSpec({
         every { repository.find() } returns listOf(
             Product(ProductId(firstProductId), Title(firstProductTitle), Price(firstProductPrice)),
             Product(ProductId(secondProductId), Title(secondProductTitle), Price(secondProductPrice)),
-        )
+        ).right()
 
         val response = SearchProductsService(repository).invoke()
 
@@ -38,12 +39,19 @@ class SearchProductsServiceShould : StringSpec({
         ).right()
     }
 
-
     "return an empty list of products" {
-        every { repository.find() } returns emptyList()
+        every { repository.find() } returns emptyList<Product>().right()
 
         val response = SearchProductsService(repository).invoke()
 
         response shouldBe SearchProductsResponse(emptyList()).right()
+    }
+
+    "return an error in case of problems retrieving a list of products" {
+        every { repository.find() } returns DomainError("Cannot find products").left()
+
+        val response = SearchProductsService(repository).invoke()
+
+        response shouldBe DomainError("Cannot find products").left()
     }
 })
