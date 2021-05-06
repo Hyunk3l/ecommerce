@@ -40,6 +40,7 @@ dependencies {
 	testImplementation("org.testcontainers:postgresql:1.15.3")
 	testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.3")
 	testImplementation("io.kotest:kotest-assertions-json:4.4.3")
+	testImplementation("io.kotest:kotest-runner-junit5:4.4.3")
 	testImplementation("io.rest-assured:rest-assured:4.3.3")
 	testImplementation("io.mockk:mockk:1.11.0")
 	testImplementation("com.ninja-squad:springmockk:3.0.1")
