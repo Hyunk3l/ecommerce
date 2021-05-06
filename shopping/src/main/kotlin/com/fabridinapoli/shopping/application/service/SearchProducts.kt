@@ -1,10 +1,19 @@
 package com.fabridinapoli.shopping.application.service
 
 import arrow.core.Either
+import arrow.core.right
+import com.fabridinapoli.shopping.domain.model.Product
+import com.fabridinapoli.shopping.domain.model.ProductRepository
 
-class SearchProductsService {
-    fun invoke(): Either<DomainError, SearchProductsResponse> {
-        TODO()
+class SearchProductsService(private val repository: ProductRepository) {
+    fun invoke(): Either<DomainError, SearchProductsResponse> = repository.find()
+        .toResponse()
+        .right()
+
+    private fun List<Product>.toResponse() = this.map {
+        ProductResponse(it.id.value, it.title.value, it.price.value)
+    }.let {
+        SearchProductsResponse(it)
     }
 }
 
