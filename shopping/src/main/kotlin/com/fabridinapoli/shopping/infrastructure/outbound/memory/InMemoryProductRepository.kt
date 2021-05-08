@@ -12,7 +12,7 @@ class InMemoryProductRepository : ProductRepository {
     override fun find(): Either<DomainError, List<Product>> =
         this.products.right()
 
-    // We don't care about thread safety.
+    // Here we don't care about thread safety.
     override fun save(products: List<Product>) {
         this.products = this.products + products
     }
