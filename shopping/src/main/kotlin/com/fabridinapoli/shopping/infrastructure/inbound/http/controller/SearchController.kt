@@ -1,7 +1,5 @@
 package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 
-import arrow.core.getOrElse
-import arrow.core.right
 import com.fabridinapoli.shopping.application.service.ProductResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsService
