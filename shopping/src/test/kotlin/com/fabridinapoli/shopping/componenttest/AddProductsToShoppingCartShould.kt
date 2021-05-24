@@ -11,7 +11,6 @@ import com.fabridinapoli.shopping.domain.model.UserId
 import com.fabridinapoli.shopping.domain.model.UserRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxShoppingCartEvent
-import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import java.util.UUID
@@ -49,18 +48,19 @@ class AddProductsToShoppingCartShould : BaseComponentTest() {
         val response = RestAssured.given()
             .contentType(ContentType.APPLICATION_JSON.toString())
             .port(servicePort)
-            .`when`()
-            .get("/carts/$SHOPPING_CART_ID")
-            .then()
-            .extract()
-
-        response.statusCode() shouldBe 201
-        response.body().asString() shouldEqualJson """
+            .and()
+            .body("""
                 {
                     "userId": "$USER_ID",
                     "productId: "$PRODUCT_ID",
                 }
-            """.trimIndent()
+            """.trimIndent())
+            .`when`()
+            .put("/shopping-carts/$SHOPPING_CART_ID")
+            .then()
+            .extract()
+
+        response.statusCode() shouldBe 201
         outboxRepository.findLatestBy(ShoppingCartId(SHOPPING_CART_ID)
             ) shouldBe OutboxShoppingCartEvent(id = SHOPPING_CART_ID.toString(), type = ProductAddedToShoppingCartEvent::class.toString())
     }
