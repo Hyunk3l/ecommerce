@@ -3,6 +3,7 @@ package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 import arrow.core.Either
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartRequest
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartService
+import com.fabridinapoli.shopping.domain.model.DomainError
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
@@ -57,5 +58,31 @@ class ShoppingCartControllerShould {
             .expectBody()
             .isEmpty
         verify { addProductToShoppingCartService.invoke(request) }
+    }
+
+    @Test
+    fun `return a bad request when any error on adding a product to shopping cart`() {
+        every { addProductToShoppingCartService.invoke(any()) } returns Either.Left(DomainError("some generic error"))
+
+        val response = webTestClient
+            .put()
+            .uri("/shopping-carts/$SHOPPING_CART_ID")
+            .contentType(MediaType.APPLICATION_JSON)
+            .bodyValue(
+                """
+                {
+                    "userId": "$USER_ID",
+                    "productId": "$PRODUCT_ID"
+                }
+            """.trimIndent()
+            )
+            .exchange()
+
+        response
+            .expectStatus()
+            .isBadRequest
+            .expectBody()
+            .isEmpty
+        verify { addProductToShoppingCartService.invoke(any()) }
     }
 }

@@ -14,15 +14,18 @@ class ShoppingCartController(@Autowired private val addProductToShoppingCartServ
     @PutMapping("/shopping-carts/{shoppingCartId}")
     fun addProduct(
         @PathVariable shoppingCartId: String,
-        @RequestBody requestBody: HttpAddProductRequestBody): ResponseEntity<String>? {
-        addProductToShoppingCartService.invoke(
+        @RequestBody requestBody: HttpAddProductRequestBody
+    ): ResponseEntity<String>? {
+        return addProductToShoppingCartService.invoke(
             AddProductToShoppingCartRequest(
                 shoppingCartId = shoppingCartId,
                 productId = requestBody.productId,
                 userId = requestBody.userId
             )
+        ).fold(
+            { ResponseEntity.status(400).build() },
+            { ResponseEntity.status(201).build() }
         )
-        return ResponseEntity.status(201).build()
     }
 }
 
