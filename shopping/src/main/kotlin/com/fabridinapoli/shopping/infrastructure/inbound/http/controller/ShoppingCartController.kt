@@ -15,18 +15,21 @@ class ShoppingCartController(@Autowired private val addProductToShoppingCartServ
     fun addProduct(
         @PathVariable shoppingCartId: String,
         @RequestBody requestBody: HttpAddProductRequestBody
-    ): ResponseEntity<String>? {
-        return addProductToShoppingCartService.invoke(
-            AddProductToShoppingCartRequest(
-                shoppingCartId = shoppingCartId,
-                productId = requestBody.productId,
-                userId = requestBody.userId
+    ): ResponseEntity<String> =
+        requestBody.toUseCaseRequest(shoppingCartId)
+            .let {
+                addProductToShoppingCartService.invoke(it)
+            }.fold(
+                { ResponseEntity.status(400).build() },
+                { ResponseEntity.status(201).build() }
             )
-        ).fold(
-            { ResponseEntity.status(400).build() },
-            { ResponseEntity.status(201).build() }
+
+    private fun HttpAddProductRequestBody.toUseCaseRequest(shoppingCartId: String) =
+        AddProductToShoppingCartRequest(
+            shoppingCartId = shoppingCartId,
+            productId = this.productId,
+            userId = this.userId
         )
-    }
 }
 
 data class HttpAddProductRequestBody(
