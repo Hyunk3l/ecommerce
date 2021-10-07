@@ -15,6 +15,7 @@ import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import java.util.UUID
 import org.apache.http.entity.ContentType
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,6 +24,7 @@ private val SHOPPING_CART_ID = UUID.randomUUID()
 private val USER_ID = UUID.randomUUID()
 private val PRODUCT_ID = UUID.randomUUID()
 
+@Disabled("Feature is not completed yet.")
 class AddProductsToShoppingCartShould : BaseComponentTest() {
 
     @Autowired

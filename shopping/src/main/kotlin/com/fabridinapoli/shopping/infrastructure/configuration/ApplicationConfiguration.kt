@@ -1,5 +1,6 @@
 package com.fabridinapoli.shopping.infrastructure.configuration
 
+import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartService
 import com.fabridinapoli.shopping.application.service.SearchProductsService
 import com.fabridinapoli.shopping.domain.model.ProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
@@ -22,4 +23,7 @@ class ApplicationConfiguration {
 
     @Bean
     fun searchProductsService(productRepository: ProductRepository) = SearchProductsService(productRepository)
+
+    @Bean
+    fun addProductToShoppingCartService() = AddProductToShoppingCartService()
 }
