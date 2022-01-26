@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.5.0-SNAPSHOT"
+	id("org.springframework.boot") version "2.6.3"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.6.0-M1"
-	kotlin("plugin.spring") version "1.6.0-M1"
+	kotlin("jvm") version "1.6.10"
+	kotlin("plugin.spring") version "1.6.10"
 }
 
 group = "com.fabridinapoli"
@@ -24,7 +24,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.apache.kafka:kafka-streams")
-	implementation("io.arrow-kt:arrow-core:0.13.2")
+	implementation("io.arrow-kt:arrow-core:1.0.1")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -34,16 +34,16 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(module = "mockito-core")
 	}
-	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("org.testcontainers:testcontainers:1.15.3")
-	testImplementation("org.testcontainers:junit-jupiter:1.15.3")
-	testImplementation("org.testcontainers:postgresql:1.15.3")
-	testImplementation("io.kotest:kotest-assertions-core-jvm:4.4.3")
-	testImplementation("io.kotest:kotest-assertions-json:4.4.3")
-	testImplementation("io.kotest:kotest-runner-junit5:4.4.3")
-	testImplementation("io.rest-assured:rest-assured:4.3.3")
-	testImplementation("io.mockk:mockk:1.11.0")
-	testImplementation("com.ninja-squad:springmockk:3.0.1")
+	testImplementation("io.projectreactor:reactor-test:3.4.14")
+	testImplementation("org.testcontainers:testcontainers:1.16.3")
+	testImplementation("org.testcontainers:junit-jupiter:1.16.3")
+	testImplementation("org.testcontainers:postgresql:1.16.3")
+	testImplementation("io.kotest:kotest-assertions-core-jvm:5.1.0")
+	testImplementation("io.kotest:kotest-assertions-json:5.1.0")
+	testImplementation("io.kotest:kotest-runner-junit5:5.1.0")
+	testImplementation("io.rest-assured:rest-assured:4.5.0")
+	testImplementation("io.mockk:mockk:1.12.2")
+	testImplementation("com.ninja-squad:springmockk:3.1.0")
 }
 
 tasks.withType<KotlinCompile> {
