@@ -22,13 +22,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.5")
 	implementation("org.apache.kafka:kafka-streams")
 	implementation("io.arrow-kt:arrow-core:1.0.1")
 	implementation("org.flywaydb:flyway-core")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.0")
 	runtimeOnly("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
@@ -56,3 +56,5 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+extra["kotlin-coroutines.version"] = "1.6.0"
