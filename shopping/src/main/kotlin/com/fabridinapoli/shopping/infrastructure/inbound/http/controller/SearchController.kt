@@ -17,7 +17,7 @@ class SearchController {
 
     @GetMapping("/products")
     fun getProducts(): ResponseEntity<HttpSearchProductResponse> =
-        searchProductsService.invoke()
+        searchProductsService()
             .fold(
                 {
                     ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build()

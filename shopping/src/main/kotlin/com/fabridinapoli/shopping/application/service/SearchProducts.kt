@@ -8,7 +8,7 @@ import com.fabridinapoli.shopping.domain.model.Product
 import com.fabridinapoli.shopping.domain.model.ProductRepository
 
 class SearchProductsService(private val repository: ProductRepository) {
-    fun invoke(): Either<DomainError, SearchProductsResponse> =
+    operator fun invoke(): Either<DomainError, SearchProductsResponse> =
         repository
             .find()
             .fold({

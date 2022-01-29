@@ -43,7 +43,7 @@ class SearchControllerShould {
                 )
             )
         )
-        every { searchProducts.invoke() } returns Either.Right(searchProductsResponse)
+        every { searchProducts() } returns Either.Right(searchProductsResponse)
 
         val response = webTestClient
             .get()
@@ -66,7 +66,7 @@ class SearchControllerShould {
 
     @Test
     fun `return a 500 if any error in the use case`() {
-        every { searchProducts.invoke() } returns Either.Left(DomainError("Any error"))
+        every { searchProducts() } returns Either.Left(DomainError("Any error"))
 
         val response = webTestClient
             .get()

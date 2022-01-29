@@ -30,7 +30,7 @@ class SearchProductsServiceShould : StringSpec({
             Product(ProductId(secondProductId), Title(secondProductTitle), Price(secondProductPrice)),
         ).right()
 
-        val response = SearchProductsService(repository).invoke()
+        val response = SearchProductsService(repository)()
 
         response shouldBe SearchProductsResponse(
             listOf(
@@ -43,7 +43,7 @@ class SearchProductsServiceShould : StringSpec({
     "return an empty list of products" {
         every { repository.find() } returns emptyList<Product>().right()
 
-        val response = SearchProductsService(repository).invoke()
+        val response = SearchProductsService(repository)()
 
         response shouldBe SearchProductsResponse(emptyList()).right()
     }
@@ -51,7 +51,7 @@ class SearchProductsServiceShould : StringSpec({
     "return an error in case of problems retrieving a list of products" {
         every { repository.find() } returns DomainError("Cannot find products").left()
 
-        val response = SearchProductsService(repository).invoke()
+        val response = SearchProductsService(repository)()
 
         response shouldBe DomainError("Cannot find products").left()
     }
