@@ -1,3 +1,8 @@
 package com.fabridinapoli.shopping.domain.model
 
-data class ProductAddedToShoppingCartEvent(val id: ProductId)
+sealed class DomainEvent(val eventId: Any)
+
+data class ProductAddedToShoppingCartEvent(
+    val shoppingCartId: ShoppingCartId,
+    val productId: ProductId
+) : DomainEvent(eventId = shoppingCartId)
