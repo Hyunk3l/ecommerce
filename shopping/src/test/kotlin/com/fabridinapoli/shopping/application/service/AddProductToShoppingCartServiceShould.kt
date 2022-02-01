@@ -15,34 +15,35 @@ import io.mockk.verify
 import java.util.UUID
 
 class AddProductToShoppingCartServiceShould : StringSpec({
+
+    val shoppingCartRepository = mockk<ShoppingCartRepository>()
+    val domainEventPublisher = mockk<DomainEventPublisher>()
+
     "add a product to a new shopping cart" {
-        val shoppingCartId = ShoppingCartId(UUID.randomUUID())
         val productId = ProductId(UUID.randomUUID().toString())
-        val userId = UserId(UUID.randomUUID())
-        val shoppingCartRepository = mockk<ShoppingCartRepository>()
-        val domainEventPublisher = mockk<DomainEventPublisher>()
+        val shoppingCart = ShoppingCart(
+            ShoppingCartId(UUID.randomUUID()),
+            UserId(UUID.randomUUID()),
+            emptyList()
+        )
         val updatedShoppingCart = ShoppingCart(
-            id = shoppingCartId,
-            userId = userId,
+            id = shoppingCart.id,
+            userId = shoppingCart.userId,
             products = listOf(productId)
         )
         val event = ProductAddedToShoppingCartEvent(
-            shoppingCartId = shoppingCartId,
+            shoppingCartId = shoppingCart.id,
             productId = productId
         )
-        every { shoppingCartRepository.findOrNew(shoppingCartId, userId) } returns ShoppingCart(
-            shoppingCartId,
-            userId,
-            emptyList()
-        )
+        every { shoppingCartRepository.findOrNew(shoppingCart.id, shoppingCart.userId) } returns shoppingCart
         every { shoppingCartRepository.save(updatedShoppingCart) } returns Unit.right()
         every { domainEventPublisher.publish(event) } returns Unit
 
         AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)(
             AddProductToShoppingCartRequest(
                 productId = productId.value,
-                userId = userId.value.toString(),
-                shoppingCartId = shoppingCartId.id.toString()
+                userId = shoppingCart.userId.value.toString(),
+                shoppingCartId = shoppingCart.id.id.toString()
             )
         )
 
