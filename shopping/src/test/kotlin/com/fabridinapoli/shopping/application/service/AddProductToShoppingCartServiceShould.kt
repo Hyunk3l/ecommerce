@@ -11,6 +11,7 @@ import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
 import io.kotest.core.spec.style.StringSpec
+import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -32,6 +33,10 @@ class AddProductToShoppingCartServiceShould : StringSpec({
         shoppingCartId = newShoppingCart.id.id.toString()
     )
     val service = AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)
+
+    beforeTest {
+        clearAllMocks()
+    }
 
     "add a product to a new shopping cart" {
         val updatedShoppingCart = ShoppingCart(
