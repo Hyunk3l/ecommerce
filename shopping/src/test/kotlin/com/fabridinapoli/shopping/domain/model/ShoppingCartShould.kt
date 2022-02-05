@@ -12,9 +12,9 @@ class ShoppingCartShould : StringSpec({
             userId = UserId(value = UUID.randomUUID()),
             products = emptyList(),
         )
-        val shoppingCartWithOneProduct = ShoppingCart(
-            id = shoppingCart.id,
-            userId = shoppingCart.userId,
+        val shoppingCartWithOneProduct = ShoppingCart.from(
+            id = shoppingCart.id.id.toString(),
+            userId = shoppingCart.userId.value.toString(),
             products = listOf(productId),
         )
 
