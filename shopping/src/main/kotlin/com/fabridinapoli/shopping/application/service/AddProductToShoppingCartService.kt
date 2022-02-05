@@ -1,6 +1,7 @@
 package com.fabridinapoli.shopping.application.service
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.DomainEventPublisher
@@ -18,10 +19,17 @@ class AddProductToShoppingCartService(
         shoppingCartRepository
             .findOrNew(ShoppingCartId.from(request.shoppingCartId), UserId.from(request.userId))
             .addProduct(ProductId(request.productId))
-            .also {
-                shoppingCartRepository.save(it)
-                domainEventPublisher.publish(ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId)))
-            }.let { Unit.right() }
+            .let { shoppingCartRepository.save(it) }
+            .fold(
+                ifLeft = { it.left() },
+                ifRight = {
+                    domainEventPublisher
+                        .publish(
+                            ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))
+                        )
+                    Unit.right()
+                }
+            )
 }
 
 data class AddProductToShoppingCartRequest(val productId: String, val userId: String, val shoppingCartId: String)

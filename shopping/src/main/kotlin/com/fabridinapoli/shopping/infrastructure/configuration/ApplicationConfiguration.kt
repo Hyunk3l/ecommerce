@@ -35,7 +35,7 @@ class ApplicationConfiguration {
     @Bean
     fun addProductToShoppingCartService() = AddProductToShoppingCartService(
         object : ShoppingCartRepository {
-            override fun save(shoppingCart: ShoppingCart): Either<DomainError, Unit> {
+            override fun save(shoppingCart: ShoppingCart): Either<DomainError, ShoppingCart> {
                 TODO("Not yet implemented")
             }
 
