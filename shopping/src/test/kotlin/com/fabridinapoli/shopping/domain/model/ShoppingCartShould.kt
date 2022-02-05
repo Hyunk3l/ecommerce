@@ -8,7 +8,7 @@ class ShoppingCartShould : StringSpec({
     "add a product to a new cart" {
         val productId = ProductId(UUID.randomUUID().toString())
         val shoppingCart = ShoppingCart(
-            id = ShoppingCartId(id = UUID.randomUUID()),
+            id = ShoppingCartId.from(UUID.randomUUID().toString()),
             userId = UserId(value = UUID.randomUUID()),
             products = emptyList(),
         )
