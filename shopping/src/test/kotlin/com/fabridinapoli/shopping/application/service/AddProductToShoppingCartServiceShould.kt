@@ -20,67 +20,51 @@ class AddProductToShoppingCartServiceShould : StringSpec({
 
     val shoppingCartRepository = mockk<ShoppingCartRepository>()
     val domainEventPublisher = mockk<DomainEventPublisher>()
+    val productId = ProductId(UUID.randomUUID().toString())
+    val newShoppingCart = ShoppingCart(
+        ShoppingCartId(UUID.randomUUID()),
+        UserId(UUID.randomUUID()),
+        emptyList()
+    )
+    val addProductToShoppingCartRequest = AddProductToShoppingCartRequest(
+        productId = productId.value,
+        userId = newShoppingCart.userId.value.toString(),
+        shoppingCartId = newShoppingCart.id.id.toString()
+    )
+    val service = AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)
 
     "add a product to a new shopping cart" {
-        val productId = ProductId(UUID.randomUUID().toString())
-        val shoppingCart = ShoppingCart(
-            ShoppingCartId(UUID.randomUUID()),
-            UserId(UUID.randomUUID()),
-            emptyList()
-        )
         val updatedShoppingCart = ShoppingCart(
-            id = shoppingCart.id,
-            userId = shoppingCart.userId,
+            id = newShoppingCart.id,
+            userId = newShoppingCart.userId,
             products = listOf(productId)
         )
         val event = ProductAddedToShoppingCartEvent(
-            shoppingCartId = shoppingCart.id,
+            shoppingCartId = newShoppingCart.id,
             productId = productId
         )
-        every { shoppingCartRepository.findOrNew(shoppingCart.id, shoppingCart.userId) } returns shoppingCart
+        every { shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId) } returns newShoppingCart
         every { shoppingCartRepository.save(updatedShoppingCart) } returns updatedShoppingCart.right()
         every { domainEventPublisher.publish(event) } returns Unit
 
-        AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)(
-            AddProductToShoppingCartRequest(
-                productId = productId.value,
-                userId = shoppingCart.userId.value.toString(),
-                shoppingCartId = shoppingCart.id.id.toString()
-            )
-        )
+        service(addProductToShoppingCartRequest)
 
         verify(exactly = 1) { shoppingCartRepository.save(updatedShoppingCart) }
         verify(exactly = 1) { domainEventPublisher.publish(event) }
     }
 
     "fail if try to add a product that does not exist" {
-        val productId = ProductId(UUID.randomUUID().toString())
-        val shoppingCart = ShoppingCart(
-            ShoppingCartId(UUID.randomUUID()),
-            UserId(UUID.randomUUID()),
-            emptyList()
-        )
         val updatedShoppingCart = ShoppingCart(
-            id = shoppingCart.id,
-            userId = shoppingCart.userId,
+            id = newShoppingCart.id,
+            userId = newShoppingCart.userId,
             products = listOf(productId)
         )
-        val event = ProductAddedToShoppingCartEvent(
-            shoppingCartId = shoppingCart.id,
-            productId = productId
-        )
-        every { shoppingCartRepository.findOrNew(shoppingCart.id, shoppingCart.userId) } returns shoppingCart
+        every { shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId) } returns newShoppingCart
         every { shoppingCartRepository.save(updatedShoppingCart) } returns DomainError("Product not found").left()
 
-        AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)(
-            AddProductToShoppingCartRequest(
-                productId = productId.value,
-                userId = shoppingCart.userId.value.toString(),
-                shoppingCartId = shoppingCart.id.id.toString()
-            )
-        )
+        service(addProductToShoppingCartRequest)
 
         verify(exactly = 1) { shoppingCartRepository.save(updatedShoppingCart) }
-        verify(exactly = 0) { domainEventPublisher.publish(event) }
+        verify(exactly = 0) { domainEventPublisher.publish(any()) }
     }
 })
