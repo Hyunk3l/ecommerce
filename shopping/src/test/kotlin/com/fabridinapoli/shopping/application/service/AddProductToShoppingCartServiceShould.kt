@@ -11,6 +11,7 @@ import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
 import io.kotest.core.spec.style.StringSpec
+import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks
 import io.mockk.every
 import io.mockk.mockk
@@ -70,6 +71,22 @@ class AddProductToShoppingCartServiceShould : StringSpec({
         service(addProductToShoppingCartRequest)
 
         verify(exactly = 1) { shoppingCartRepository.save(updatedShoppingCart) }
+        verify(exactly = 0) { domainEventPublisher.publish(any()) }
+    }
+
+    "fail if try to add more than max allowed number of products" {
+        val existingShoppingCart = ShoppingCart(
+            id = newShoppingCart.id,
+            userId = newShoppingCart.userId,
+            products = (1..15).map { productId }
+        )
+        every {
+            shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId)
+        } returns existingShoppingCart
+
+        service(addProductToShoppingCartRequest) shouldBe DomainError("Too many products. Max allowed is 15").left()
+
+        verify(exactly = 0) { shoppingCartRepository.save(any()) }
         verify(exactly = 0) { domainEventPublisher.publish(any()) }
     }
 })

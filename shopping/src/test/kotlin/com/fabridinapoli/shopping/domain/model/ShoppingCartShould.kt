@@ -1,8 +1,6 @@
 package com.fabridinapoli.shopping.domain.model
 
-import arrow.core.flatMap
 import arrow.core.left
-import arrow.core.right
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import java.util.UUID
@@ -23,7 +21,7 @@ class ShoppingCartShould : StringSpec({
 
         val updatedShoppingCart = shoppingCart.addProduct(productId)
 
-        updatedShoppingCart.right() shouldBe shoppingCartWithOneProduct
+        updatedShoppingCart shouldBe shoppingCartWithOneProduct
     }
 
     "fail if list of products is bigger than 15" {
