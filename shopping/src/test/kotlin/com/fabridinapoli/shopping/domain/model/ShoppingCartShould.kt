@@ -1,5 +1,6 @@
 package com.fabridinapoli.shopping.domain.model
 
+import arrow.core.flatMap
 import arrow.core.left
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
@@ -17,15 +18,14 @@ class ShoppingCartShould : StringSpec({
             userId = userId.value.toString(),
             products = emptyList(),
         )
-        val shoppingCartWithOneProduct = ShoppingCart.from(
+
+        val updatedShoppingCart = shoppingCart.flatMap { it.addProduct(productId) }
+
+        updatedShoppingCart shouldBe ShoppingCart.from(
             id = shoppingCartId.id.toString(),
             userId = userId.value.toString(),
             products = listOf(productId.value),
         )
-
-        val updatedShoppingCart = shoppingCart.map { it.addProduct(productId) }
-
-        updatedShoppingCart shouldBe shoppingCartWithOneProduct
     }
 
     "fail if list of products is bigger than 15" {
