@@ -20,8 +20,7 @@ class AddProductToShoppingCartService(
             .findOrNew(ShoppingCartId.from(request.shoppingCartId), UserId.from(request.userId))
             .addProduct(ProductId(request.productId))
             .flatMap(shoppingCartRepository::save)
-            .mapLeft { it }
-            .flatMap {
+            .map {
                 domainEventPublisher
                     .publish(
                         ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))
