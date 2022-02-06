@@ -6,10 +6,10 @@ import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.DomainEventPublisher
 import com.fabridinapoli.shopping.domain.model.ProductAddedToShoppingCartEvent
 import com.fabridinapoli.shopping.domain.model.ProductId
-import com.fabridinapoli.shopping.domain.model.ShoppingCart
 import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
+import com.fabridinapoli.shopping.domain.model.buildShoppingCart
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.clearAllMocks
@@ -23,15 +23,16 @@ class AddProductToShoppingCartServiceShould : StringSpec({
     val shoppingCartRepository = mockk<ShoppingCartRepository>()
     val domainEventPublisher = mockk<DomainEventPublisher>()
     val productId = ProductId(UUID.randomUUID().toString())
-    val newShoppingCart = ShoppingCart(
-        ShoppingCartId(UUID.randomUUID()),
-        UserId(UUID.randomUUID()),
-        emptyList()
+    val shoppingCartId = ShoppingCartId(UUID.randomUUID())
+    val userId = UserId(UUID.randomUUID())
+    val newShoppingCart = buildShoppingCart(
+        id = shoppingCartId,
+        userId = userId,
     )
     val addProductToShoppingCartRequest = AddProductToShoppingCartRequest(
         productId = productId.value,
-        userId = newShoppingCart.userId.value.toString(),
-        shoppingCartId = newShoppingCart.id.id.toString()
+        userId = userId.value.toString(),
+        shoppingCartId = shoppingCartId.id.toString(),
     )
     val service = AddProductToShoppingCartService(shoppingCartRepository, domainEventPublisher)
 
@@ -40,16 +41,16 @@ class AddProductToShoppingCartServiceShould : StringSpec({
     }
 
     "add a product to a new shopping cart" {
-        val updatedShoppingCart = ShoppingCart(
-            id = newShoppingCart.id,
-            userId = newShoppingCart.userId,
+        val updatedShoppingCart = buildShoppingCart(
+            id = shoppingCartId,
+            userId = userId,
             products = listOf(productId)
         )
         val event = ProductAddedToShoppingCartEvent(
-            shoppingCartId = newShoppingCart.id,
+            shoppingCartId =  shoppingCartId,
             productId = productId
         )
-        every { shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId) } returns newShoppingCart
+        every { shoppingCartRepository.findOrNew(shoppingCartId, userId) } returns newShoppingCart
         every { shoppingCartRepository.save(updatedShoppingCart) } returns updatedShoppingCart.right()
         every { domainEventPublisher.publish(event) } returns Unit
 
@@ -60,12 +61,12 @@ class AddProductToShoppingCartServiceShould : StringSpec({
     }
 
     "fail if try to add a product that does not exist" {
-        val updatedShoppingCart = ShoppingCart(
-            id = newShoppingCart.id,
-            userId = newShoppingCart.userId,
-            products = listOf(productId)
+        val updatedShoppingCart = buildShoppingCart(
+            id = shoppingCartId,
+            userId = userId,
+            products = listOf(productId),
         )
-        every { shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId) } returns newShoppingCart
+        every { shoppingCartRepository.findOrNew(shoppingCartId, userId) } returns newShoppingCart
         every { shoppingCartRepository.save(updatedShoppingCart) } returns DomainError("Product not found").left()
 
         service(addProductToShoppingCartRequest)
@@ -75,11 +76,7 @@ class AddProductToShoppingCartServiceShould : StringSpec({
     }
 
     "fail if try to add more than max allowed number of products" {
-        val existingShoppingCart = ShoppingCart(
-            id = newShoppingCart.id,
-            userId = newShoppingCart.userId,
-            products = (1..15).map { productId }
-        )
+        val existingShoppingCart = buildShoppingCart(products = (1..15).map { productId })
         every {
             shoppingCartRepository.findOrNew(newShoppingCart.id, newShoppingCart.userId)
         } returns existingShoppingCart
