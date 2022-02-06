@@ -6,20 +6,24 @@ import io.kotest.matchers.shouldBe
 import java.util.UUID
 
 class ShoppingCartShould : StringSpec({
+
+    val productId = ProductId(UUID.randomUUID().toString())
+    val shoppingCartId = ShoppingCartId(UUID.randomUUID())
+    val userId = UserId(UUID.randomUUID())
+
     "add a product to a new cart" {
-        val productId = ProductId(UUID.randomUUID().toString())
-        val shoppingCart = ShoppingCart(
-            id = ShoppingCartId(UUID.randomUUID()),
-            userId = UserId(UUID.randomUUID()),
+        val shoppingCart = ShoppingCart.from(
+            id = shoppingCartId.id.toString(),
+            userId = userId.value.toString(),
             products = emptyList(),
         )
         val shoppingCartWithOneProduct = ShoppingCart.from(
-            id = shoppingCart.id.id.toString(),
-            userId = shoppingCart.userId.value.toString(),
+            id = shoppingCartId.id.toString(),
+            userId = userId.value.toString(),
             products = listOf(productId.value),
         )
 
-        val updatedShoppingCart = shoppingCart.addProduct(productId)
+        val updatedShoppingCart = shoppingCart.map { it.addProduct(productId) }
 
         updatedShoppingCart shouldBe shoppingCartWithOneProduct
     }
@@ -28,8 +32,8 @@ class ShoppingCartShould : StringSpec({
         val products = (1..16).map { UUID.randomUUID().toString() }
 
         ShoppingCart.from(
-            id = UUID.randomUUID().toString(),
-            userId = UUID.randomUUID().toString(),
+            id = shoppingCartId.id.toString(),
+            userId = userId.value.toString(),
             products = products,
         ) shouldBe DomainError("Too many products. Max allowed is 15").left()
     }

@@ -8,7 +8,7 @@ import java.util.UUID
 
 private const val MAX_PRODUCTS_ALLOWED_PER_CART = 15
 
-data class ShoppingCart(val id: ShoppingCartId, val userId: UserId, val products: List<ProductId>) {
+data class ShoppingCart private constructor(val id: ShoppingCartId, val userId: UserId, val products: List<ProductId>) {
     fun addProduct(productId: ProductId): Either<DomainError, ShoppingCart> {
         return (this.products + productId)
             .validate()
