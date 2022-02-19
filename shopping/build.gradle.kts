@@ -23,7 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.5")
-	implementation("org.apache.kafka:kafka-streams")
+	implementation("org.apache.kafka:kafka-streams:3.1.0")
 	implementation("io.arrow-kt:arrow-core:1.0.1")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
