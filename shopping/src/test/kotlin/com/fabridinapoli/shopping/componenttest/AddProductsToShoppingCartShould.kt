@@ -43,27 +43,35 @@ class AddProductsToShoppingCartShould : BaseComponentTest() {
     @Test
     fun `add a product to shopping cart successfully`() {
         userRepository.save(User(UserId(USER_ID)))
-        productRepository.save(listOf(
-            Product(ProductId(PRODUCT_ID.toString()), Title("OWC Thunderbolt 3 Dock 14 Ports"), Price(239.00)),
-        ))
+        productRepository.save(
+            listOf(
+                Product(ProductId(PRODUCT_ID.toString()), Title("OWC Thunderbolt 3 Dock 14 Ports"), Price(239.00)),
+            )
+        )
 
         val response = RestAssured.given()
             .contentType(ContentType.APPLICATION_JSON.toString())
             .port(servicePort)
             .and()
-            .body("""
+            .body(
+                """
                 {
                     "userId": "$USER_ID",
                     "productId: "$PRODUCT_ID",
                 }
-            """.trimIndent())
+            """.trimIndent()
+            )
             .`when`()
             .put("/shopping-carts/$SHOPPING_CART_ID")
             .then()
             .extract()
 
         response.statusCode() shouldBe 201
-        outboxRepository.findLatestBy(ShoppingCartId(SHOPPING_CART_ID)
-            ) shouldBe OutboxShoppingCartEvent(id = SHOPPING_CART_ID.toString(), type = ProductAddedToShoppingCartEvent::class.toString())
+        outboxRepository.findLatestBy(
+            ShoppingCartId(SHOPPING_CART_ID)
+        ) shouldBe OutboxShoppingCartEvent(
+            id = SHOPPING_CART_ID.toString(),
+            type = ProductAddedToShoppingCartEvent::class.toString()
+        )
     }
 }
