@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-class ShoppingCartController(@Autowired private val addProductToShoppingCartService: AddProductToShoppingCartService) {
+class ShoppingCartController(
+    @Autowired private val addProductToShoppingCartService: AddProductToShoppingCartService
+) {
     @PutMapping("/shopping-carts/{shoppingCartId}")
     fun addProduct(
         @PathVariable shoppingCartId: String,

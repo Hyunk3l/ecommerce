@@ -21,7 +21,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator:2.6.3")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc:2.6.3")
 	implementation("org.springframework.boot:spring-boot-starter-webflux:2.6.3")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.5")
 	implementation("org.apache.kafka:kafka-streams:3.1.0")
 	implementation("io.arrow-kt:arrow-core:1.0.1")
@@ -29,7 +29,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.0")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.0")
-	runtimeOnly("org.postgresql:postgresql")
+	implementation("org.postgresql:postgresql")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(module = "mockito-core")

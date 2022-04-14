@@ -26,7 +26,7 @@ abstract class BaseComponentTest {
 
     companion object {
         @Container
-        private val databaseContainer = PostgreSQLContainer<Nothing>("postgres:13.1")
+        private val databaseContainer = PostgreSQLContainer<Nothing>("postgres:14.2")
 
         @DynamicPropertySource
         @JvmStatic
