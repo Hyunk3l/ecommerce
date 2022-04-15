@@ -1,10 +1,13 @@
 package com.fabridinapoli.shopping.infrastructure.outbound.database
 
 import com.fabridinapoli.shopping.DatabaseContainer
+import com.fabridinapoli.shopping.domain.model.ShoppingCartId
+import com.fabridinapoli.shopping.domain.model.UserId
 import com.fabridinapoli.shopping.domain.model.buildShoppingCart
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.kotest.matchers.shouldBe
+import java.util.UUID
 import org.junit.jupiter.api.Tag
 import org.junit.jupiter.api.Test
 import org.springframework.jdbc.core.JdbcTemplate
@@ -18,13 +21,35 @@ class PostgresShoppingCartRepositoryShould {
 
     private var objectMapper = ObjectMapper().registerKotlinModule()
 
+    private val repository = PostgresShoppingCartRepository(jdbcTemplate, objectMapper)
+
     @Test
     fun `save a new shopping cart`() {
         val shoppingCart = buildShoppingCart()
-        val repository = PostgresShoppingCartRepository(jdbcTemplate, objectMapper)
 
         repository.save(shoppingCart)
 
         shoppingCart shouldBe repository.findOrNew(shoppingCart.id, shoppingCart.userId)
+    }
+
+    @Test
+    fun `find an existing shopping cart`() {
+        val shoppingCart = buildShoppingCart()
+        repository.save(shoppingCart)
+
+        val existingShoppingCart = repository.findOrNew(shoppingCart.id, shoppingCart.userId)
+
+        shoppingCart shouldBe existingShoppingCart
+    }
+
+    @Test
+    fun `create a new shopping cart if there isn't one with id and user id`() {
+        val shoppingCartId = ShoppingCartId(UUID.randomUUID())
+        val userId = UserId(UUID.randomUUID())
+        val expectedShoppingCart = buildShoppingCart(id = shoppingCartId, userId = userId)
+
+        val newShoppingCart = repository.findOrNew(shoppingCartId, userId)
+
+        expectedShoppingCart shouldBe newShoppingCart
     }
 }

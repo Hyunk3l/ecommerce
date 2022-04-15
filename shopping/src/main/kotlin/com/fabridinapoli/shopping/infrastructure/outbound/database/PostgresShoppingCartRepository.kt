@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.sql.ResultSet
 import java.util.UUID
 import org.postgresql.util.PGobject
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
 
@@ -29,11 +30,15 @@ class PostgresShoppingCartRepository(
     }
 
     override fun findOrNew(shoppingCartId: ShoppingCartId, userId: UserId): ShoppingCart {
-        return jdbcTemplate.queryForObject(
-            """
-            SELECT id, user_id, data FROM shopping_cart WHERE id = ? AND user_id = ? LIMIT 1
-        """.trimIndent(), shoppingCartId.id, userId.value
-        ) { rs: ResultSet, _: Any -> rs.resultSetToShoppingCart() }
+        return try {
+            jdbcTemplate.queryForObject(
+                """
+                SELECT id, user_id, data FROM shopping_cart WHERE id = ? AND user_id = ? LIMIT 1
+            """.trimIndent(), shoppingCartId.id, userId.value
+            ) { rs: ResultSet, _: Any -> rs.resultSetToShoppingCart() }
+        } catch (exception: EmptyResultDataAccessException) {
+            ShoppingCart(shoppingCartId, userId, emptyList())
+        }
     }
 
     private fun ShoppingCart.toDatabaseModel(): PGobject {
