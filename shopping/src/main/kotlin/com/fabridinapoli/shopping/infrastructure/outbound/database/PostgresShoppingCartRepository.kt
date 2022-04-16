@@ -20,10 +20,11 @@ class PostgresShoppingCartRepository(
     private val jdbcTemplate: JdbcTemplate, private val objectMapper: ObjectMapper
 ) : ShoppingCartRepository {
     override fun save(shoppingCart: ShoppingCart): Either<DomainError, ShoppingCart> {
+        val data = shoppingCart.toDatabaseModel()
         jdbcTemplate.update(
             """
-            INSERT INTO shopping_cart VALUES(?, ?, ?)
-        """.trimIndent(), shoppingCart.id.id, shoppingCart.userId.value, shoppingCart.toDatabaseModel()
+            INSERT INTO shopping_cart VALUES(?, ?, ?) ON CONFLICT(id) DO UPDATE SET data = ?
+        """.trimIndent(), shoppingCart.id.id, shoppingCart.userId.value, data, data
         )
 
         return shoppingCart.right()

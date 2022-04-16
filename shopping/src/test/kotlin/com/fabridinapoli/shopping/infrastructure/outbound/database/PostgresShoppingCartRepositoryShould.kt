@@ -1,6 +1,8 @@
 package com.fabridinapoli.shopping.infrastructure.outbound.database
 
+import arrow.core.right
 import com.fabridinapoli.shopping.DatabaseContainer
+import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.UserId
 import com.fabridinapoli.shopping.domain.model.buildShoppingCart
@@ -51,5 +53,16 @@ class PostgresShoppingCartRepositoryShould {
         val newShoppingCart = repository.findOrNew(shoppingCartId, userId)
 
         expectedShoppingCart shouldBe newShoppingCart
+    }
+
+    @Test
+    fun `update the shopping cart if it already exists`() {
+        val shoppingCart = buildShoppingCart()
+        repository.save(shoppingCart = shoppingCart)
+
+        val updatedShoppingCart = shoppingCart.addProduct(ProductId(UUID.randomUUID().toString()))
+        updatedShoppingCart.map { repository.save(it) }
+
+        updatedShoppingCart shouldBe repository.findOrNew(shoppingCart.id, shoppingCart.userId).right()
     }
 }
