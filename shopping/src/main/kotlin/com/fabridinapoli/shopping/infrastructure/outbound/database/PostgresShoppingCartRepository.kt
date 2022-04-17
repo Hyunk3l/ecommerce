@@ -1,6 +1,7 @@
 package com.fabridinapoli.shopping.infrastructure.outbound.database
 
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.right
 import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.ProductId
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.sql.ResultSet
 import java.util.UUID
 import org.postgresql.util.PGobject
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
@@ -21,13 +23,16 @@ class PostgresShoppingCartRepository(
 ) : ShoppingCartRepository {
     override fun save(shoppingCart: ShoppingCart): Either<DomainError, ShoppingCart> {
         val data = shoppingCart.toDatabaseModel()
-        jdbcTemplate.update(
-            """
-            INSERT INTO shopping_cart VALUES(?, ?, ?) ON CONFLICT(id) DO UPDATE SET data = ?
-        """.trimIndent(), shoppingCart.id.id, shoppingCart.userId.value, data, data
-        )
-
-        return shoppingCart.right()
+        return try {
+            jdbcTemplate.update(
+                """
+                INSERT INTO shopping_cart VALUES(?, ?, ?) ON CONFLICT(id) DO UPDATE SET data = ?
+            """.trimIndent(), shoppingCart.id.id, shoppingCart.userId.value, data, data
+            )
+            shoppingCart.right()
+        } catch (exception: DuplicateKeyException) {
+            DomainError("User has already one shopping cart").left()
+        }
     }
 
     override fun findOrNew(shoppingCartId: ShoppingCartId, userId: UserId): ShoppingCart {

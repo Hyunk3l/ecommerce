@@ -1,7 +1,9 @@
 package com.fabridinapoli.shopping.infrastructure.outbound.database
 
+import arrow.core.left
 import arrow.core.right
 import com.fabridinapoli.shopping.DatabaseContainer
+import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.UserId
@@ -64,5 +66,16 @@ class PostgresShoppingCartRepositoryShould {
         updatedShoppingCart.map { repository.save(it) }
 
         updatedShoppingCart shouldBe repository.findOrNew(shoppingCart.id, shoppingCart.userId).right()
+    }
+
+    @Test
+    fun `fail if the user has already one shopping cart`() {
+        val shoppingCart = buildShoppingCart()
+        repository.save(shoppingCart = shoppingCart)
+        val anotherShoppingCart = buildShoppingCart(userId = shoppingCart.userId)
+
+        val result = repository.save(shoppingCart = anotherShoppingCart)
+
+        DomainError("User has already one shopping cart").left() shouldBe result
     }
 }
