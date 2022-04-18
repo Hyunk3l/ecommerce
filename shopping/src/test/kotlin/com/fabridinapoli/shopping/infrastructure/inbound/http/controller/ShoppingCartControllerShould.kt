@@ -82,7 +82,14 @@ class ShoppingCartControllerShould {
             .expectStatus()
             .isBadRequest
             .expectBody()
-            .isEmpty
+            .json("""
+                {
+                    "error": "Cannot add the product to the shopping cart",
+                    "details": [
+                        "some generic error"
+                    ]
+                }
+            """.trimIndent())
         verify { addProductToShoppingCartService.invoke(any()) }
     }
 }

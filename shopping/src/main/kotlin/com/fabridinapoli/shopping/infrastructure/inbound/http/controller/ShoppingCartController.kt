@@ -2,6 +2,7 @@ package com.fabridinapoli.shopping.infrastructure.inbound.http.controller
 
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartRequest
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartService
+import com.fabridinapoli.shopping.domain.model.DomainError
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
@@ -22,7 +23,7 @@ class ShoppingCartController(
             .let {
                 addProductToShoppingCartService.invoke(it)
             }.fold(
-                { ResponseEntity.status(400).build() },
+                { ResponseEntity.status(400).body(it.toErrorBody()) },
                 { ResponseEntity.status(201).build() }
             )
 
@@ -32,6 +33,16 @@ class ShoppingCartController(
             productId = this.productId,
             userId = this.userId
         )
+
+    private fun DomainError.toErrorBody() =
+        """
+            {
+                "error": "Cannot add the product to the shopping cart",
+                "details": [
+                    "${this.message}"
+                ]
+            }
+        """.trimIndent()
 }
 
 data class HttpAddProductRequestBody(
