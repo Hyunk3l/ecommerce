@@ -12,7 +12,7 @@ import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
 import org.springframework.transaction.annotation.Transactional
 
-class AddProductToShoppingCartService(
+open class AddProductToShoppingCartService(
     private val shoppingCartRepository: ShoppingCartRepository,
     private val domainEventPublisher: DomainEventPublisher
 ) {
@@ -23,10 +23,9 @@ class AddProductToShoppingCartService(
             .addProduct(ProductId(request.productId))
             .flatMap(shoppingCartRepository::save)
             .map {
-                //TODO: implement domaineventpublisher
                 domainEventPublisher.publish(
-                        ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))
-                    )
+                    ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))
+                )
                 Unit.right()
             }
 }
