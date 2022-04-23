@@ -10,12 +10,13 @@ import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
+import org.springframework.transaction.annotation.Transactional
 
 class AddProductToShoppingCartService(
     private val shoppingCartRepository: ShoppingCartRepository,
     private val domainEventPublisher: DomainEventPublisher
 ) {
-    //TODO: Add transactional test
+    @Transactional
     operator fun invoke(request: AddProductToShoppingCartRequest): Either<DomainError, Unit> =
         shoppingCartRepository
             .findOrNew(ShoppingCartId.from(request.shoppingCartId), UserId.from(request.userId))
@@ -23,8 +24,7 @@ class AddProductToShoppingCartService(
             .flatMap(shoppingCartRepository::save)
             .map {
                 //TODO: implement domaineventpublisher
-                domainEventPublisher
-                    .publish(
+                domainEventPublisher.publish(
                         ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))
                     )
                 Unit.right()
