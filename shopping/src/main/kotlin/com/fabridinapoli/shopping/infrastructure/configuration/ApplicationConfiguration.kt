@@ -1,52 +1,51 @@
 package com.fabridinapoli.shopping.infrastructure.configuration
 
-import arrow.core.Either
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartService
 import com.fabridinapoli.shopping.application.service.SearchProductsService
-import com.fabridinapoli.shopping.domain.model.DomainError
 import com.fabridinapoli.shopping.domain.model.DomainEvent
 import com.fabridinapoli.shopping.domain.model.DomainEventPublisher
 import com.fabridinapoli.shopping.domain.model.ProductRepository
-import com.fabridinapoli.shopping.domain.model.ShoppingCart
-import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
-import com.fabridinapoli.shopping.domain.model.UserId
+import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresShoppingCartRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryUserRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.outbox.InMemoryOutboxRepository
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.jdbc.core.JdbcTemplate
 
 @Configuration
 class ApplicationConfiguration {
 
     @Bean
-    fun outboxRepository() = InMemoryOutboxRepository()
+    fun outboxRepository() = InMemoryOutboxRepository() //TODO: implement postgres outbox repo
 
     @Bean
-    fun userRepository() = InMemoryUserRepository()
+    fun userRepository() = InMemoryUserRepository() //TODO: implement postgres user repo
 
     @Bean
-    fun productRepository() = InMemoryProductRepository()
+    fun productRepository() = InMemoryProductRepository() //TODO: implement postgres product repo
 
     @Bean
     fun searchProductsService(productRepository: ProductRepository) = SearchProductsService(productRepository)
 
     @Bean
-    fun addProductToShoppingCartService() = AddProductToShoppingCartService(
-        object : ShoppingCartRepository {
-            override fun save(shoppingCart: ShoppingCart): Either<DomainError, ShoppingCart> {
-                TODO("Not yet implemented")
-            }
+    fun objectMapper() = ObjectMapper().registerKotlinModule()
 
-            override fun findOrNew(shoppingCartId: ShoppingCartId, userId: UserId): ShoppingCart {
-                TODO("Not yet implemented")
+    @Bean
+    fun postgresShoppingCartRepository(jdbcTemplate: JdbcTemplate, objectMapper: ObjectMapper) =
+        PostgresShoppingCartRepository(jdbcTemplate = jdbcTemplate, objectMapper = objectMapper)
+
+    @Bean
+    fun addProductToShoppingCartService(shoppingCartRepository: ShoppingCartRepository) =
+        AddProductToShoppingCartService(
+            shoppingCartRepository = shoppingCartRepository,
+            domainEventPublisher = object : DomainEventPublisher {
+                override fun publish(domainEvent: DomainEvent) {
+                    TODO("Not yet implemented")
+                }
             }
-        },
-        object : DomainEventPublisher {
-            override fun publish(domainEvent: DomainEvent) {
-                TODO("Not yet implemented")
-            }
-        }
-    )
+        )
 }

@@ -4,6 +4,7 @@ import arrow.core.Either
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartRequest
 import com.fabridinapoli.shopping.application.service.AddProductToShoppingCartService
 import com.fabridinapoli.shopping.domain.model.DomainError
+import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresShoppingCartRepository
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import io.mockk.verify
@@ -28,6 +29,9 @@ class ShoppingCartControllerShould {
 
     @MockkBean
     private lateinit var addProductToShoppingCartService: AddProductToShoppingCartService
+
+    @MockkBean
+    private lateinit var postgresShoppingCartRepository: PostgresShoppingCartRepository
 
     @Test
     fun `add a product to a shopping cart`() {
@@ -82,14 +86,16 @@ class ShoppingCartControllerShould {
             .expectStatus()
             .isBadRequest
             .expectBody()
-            .json("""
+            .json(
+                """
                 {
                     "error": "Cannot add the product to the shopping cart",
                     "details": [
                         "some generic error"
                     ]
                 }
-            """.trimIndent())
+            """.trimIndent()
+            )
         verify { addProductToShoppingCartService.invoke(any()) }
     }
 }

@@ -15,12 +15,14 @@ class AddProductToShoppingCartService(
     private val shoppingCartRepository: ShoppingCartRepository,
     private val domainEventPublisher: DomainEventPublisher
 ) {
+    //TODO: Add transactional test
     operator fun invoke(request: AddProductToShoppingCartRequest): Either<DomainError, Unit> =
         shoppingCartRepository
             .findOrNew(ShoppingCartId.from(request.shoppingCartId), UserId.from(request.userId))
             .addProduct(ProductId(request.productId))
             .flatMap(shoppingCartRepository::save)
             .map {
+                //TODO: implement domaineventpublisher
                 domainEventPublisher
                     .publish(
                         ProductAddedToShoppingCartEvent(it.id, ProductId(request.productId))

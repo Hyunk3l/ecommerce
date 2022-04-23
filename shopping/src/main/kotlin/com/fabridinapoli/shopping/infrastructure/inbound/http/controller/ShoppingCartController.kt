@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class ShoppingCartController(
     @Autowired private val addProductToShoppingCartService: AddProductToShoppingCartService
 ) {
-    @PutMapping("/shopping-carts/{shoppingCartId}")
+    @PutMapping(path = ["/shopping-carts/{shoppingCartId}"], consumes = ["application/json"])
     fun addProduct(
         @PathVariable shoppingCartId: String,
         @RequestBody requestBody: HttpAddProductRequestBody
