@@ -4,3 +4,9 @@ CREATE TABLE IF NOT EXISTS shopping_cart(
     user_id UUID UNIQUE NOT NULL,
     data JSONB NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS outbox(
+    id UUID NOT NULL,
+    type TEXT NOT NULL,
+    event JSONB NOT NULL
+);

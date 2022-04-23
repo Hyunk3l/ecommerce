@@ -9,8 +9,9 @@ import com.fabridinapoli.shopping.domain.model.Title
 import com.fabridinapoli.shopping.domain.model.User
 import com.fabridinapoli.shopping.domain.model.UserId
 import com.fabridinapoli.shopping.domain.model.UserRepository
+import com.fabridinapoli.shopping.infrastructure.outbound.outbox.EventId
 import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxRepository
-import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxShoppingCartEvent
+import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxEvent
 import io.kotest.matchers.shouldBe
 import io.restassured.RestAssured
 import java.util.UUID
@@ -68,10 +69,14 @@ class AddProductsToShoppingCartShould : BaseComponentTest() {
 
         response.statusCode() shouldBe 201
         outboxRepository.findLatestBy(
-            ShoppingCartId(SHOPPING_CART_ID)
-        ) shouldBe OutboxShoppingCartEvent(
-            id = SHOPPING_CART_ID.toString(),
-            type = ProductAddedToShoppingCartEvent::class.toString()
+            EventId(SHOPPING_CART_ID.toString())
+        ) shouldBe OutboxEvent(
+            id = EventId(SHOPPING_CART_ID.toString()),
+            type = ProductAddedToShoppingCartEvent::class.toString(),
+            event = ProductAddedToShoppingCartEvent(
+                shoppingCartId = ShoppingCartId(SHOPPING_CART_ID),
+                productId = ProductId(PRODUCT_ID.toString())
+            )
         )
     }
 }

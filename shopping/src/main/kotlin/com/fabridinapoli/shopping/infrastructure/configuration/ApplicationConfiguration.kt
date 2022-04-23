@@ -6,10 +6,10 @@ import com.fabridinapoli.shopping.domain.model.DomainEvent
 import com.fabridinapoli.shopping.domain.model.DomainEventPublisher
 import com.fabridinapoli.shopping.domain.model.ProductRepository
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
+import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresOutboxRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresShoppingCartRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryUserRepository
-import com.fabridinapoli.shopping.infrastructure.outbound.outbox.InMemoryOutboxRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.springframework.context.annotation.Bean
@@ -20,8 +20,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 class ApplicationConfiguration {
 
     @Bean
-    fun outboxRepository() = InMemoryOutboxRepository() //TODO: implement postgres outbox repo
-
+    fun outboxRepository(jdbcTemplate: JdbcTemplate, objectMapper: ObjectMapper) = PostgresOutboxRepository(jdbcTemplate, objectMapper)
     @Bean
     fun userRepository() = InMemoryUserRepository() //TODO: implement postgres user repo
 

@@ -1,8 +1,10 @@
 package com.fabridinapoli.shopping.domain.model
 
-sealed class DomainEvent(val eventId: Any)
+import java.util.UUID
+
+sealed class DomainEvent(val eventId: UUID)
 
 data class ProductAddedToShoppingCartEvent(
     val shoppingCartId: ShoppingCartId,
     val productId: ProductId
-) : DomainEvent(eventId = shoppingCartId)
+) : DomainEvent(eventId = shoppingCartId.id)
