@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.6.3"
+	id("org.springframework.boot") version "2.6.6"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
@@ -18,9 +18,9 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-actuator:2.6.3")
-	implementation("org.springframework.boot:spring-boot-starter-jdbc:2.6.3")
-	implementation("org.springframework.boot:spring-boot-starter-webflux:2.6.3")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
+	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.2")
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.5")
 	implementation("org.apache.kafka:kafka-streams:3.1.0")

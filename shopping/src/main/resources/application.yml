@@ -1,1 +1,13 @@
-spring.application.name: Shopping
+spring:
+  application:
+    name: Shopping
+  datasource:
+    url: jdbc:postgresql://localhost:5432/somedatabasename
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+  flyway:
+    url: jdbc:postgresql://localhost:5432/somedatabasename
+    schemas: public
+    user: postgres
+    password: postgres

@@ -19,10 +19,7 @@ import org.springframework.test.web.reactive.server.expectBody
 
 @Tag("integration")
 @WebFluxTest(controllers = [SearchController::class])
-class SearchControllerShould {
-
-    @Autowired
-    private lateinit var webTestClient: WebTestClient
+class SearchControllerShould(@Autowired val webTestClient: WebTestClient) {
 
     @MockkBean
     private lateinit var searchProducts: SearchProductsService

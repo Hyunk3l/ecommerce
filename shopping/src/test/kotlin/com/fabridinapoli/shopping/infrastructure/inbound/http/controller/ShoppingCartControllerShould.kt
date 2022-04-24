@@ -22,16 +22,10 @@ private val USER_ID = UUID.randomUUID()
 
 @Tag("integration")
 @WebFluxTest(controllers = [ShoppingCartController::class])
-class ShoppingCartControllerShould {
+class ShoppingCartControllerShould(@Autowired val webTestClient: WebTestClient) {
 
-    @Autowired
-    private lateinit var webTestClient: WebTestClient
-
-    @MockkBean
+    @MockkBean(relaxed = true)
     private lateinit var addProductToShoppingCartService: AddProductToShoppingCartService
-
-    @MockkBean
-    private lateinit var postgresShoppingCartRepository: PostgresShoppingCartRepository
 
     @Test
     fun `add a product to a shopping cart`() {
