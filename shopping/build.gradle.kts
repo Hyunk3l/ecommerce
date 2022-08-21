@@ -35,9 +35,9 @@ dependencies {
 		exclude(module = "mockito-core")
 	}
 	testImplementation("io.projectreactor:reactor-test:3.4.14")
-	testImplementation("org.testcontainers:testcontainers:1.16.3")
-	testImplementation("org.testcontainers:junit-jupiter:1.16.3")
-	testImplementation("org.testcontainers:postgresql:1.16.3")
+	testImplementation("org.testcontainers:testcontainers:1.17.3")
+	testImplementation("org.testcontainers:junit-jupiter:1.17.3")
+	testImplementation("org.testcontainers:postgresql:1.17.3")
 	testImplementation("io.kotest:kotest-assertions-core-jvm:5.1.0")
 	testImplementation("io.kotest:kotest-assertions-json:5.1.0")
 	testImplementation("io.kotest:kotest-runner-junit5:5.1.0")
@@ -47,12 +47,13 @@ dependencies {
 	testImplementation("io.rest-assured:json-schema-validator:4.5.0")
 	testImplementation("io.mockk:mockk:1.12.2")
 	testImplementation("com.ninja-squad:springmockk:3.1.0")
+	testImplementation("net.java.dev.jna:jna:5.12.1")
 }
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "11"
+		jvmTarget = "17"
 	}
 }
 
