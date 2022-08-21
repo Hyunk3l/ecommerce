@@ -73,7 +73,10 @@ class AddProductToShoppingCartServiceShould : StringSpec({
         service(addProductToShoppingCartRequest)
 
         verify(exactly = 1) { shoppingCartRepository.save(updatedShoppingCart) }
-        //verify(exactly = 0) { domainEventPublisher.publish(any<DomainEvent>()) }
+        verify(exactly = 0) { domainEventPublisher.publish(ProductAddedToShoppingCartEvent(
+            shoppingCartId = shoppingCartId,
+            productId = productId
+        )) }
     }
 
     "fail if try to add more than max allowed number of products" {
@@ -85,6 +88,9 @@ class AddProductToShoppingCartServiceShould : StringSpec({
         service(addProductToShoppingCartRequest) shouldBe DomainError("Too many products. Max allowed is 15").left()
 
         verify(exactly = 0) { shoppingCartRepository.save(any()) }
-        //verify(exactly = 0) { domainEventPublisher.publish(any()) }
+        verify(exactly = 0) { domainEventPublisher.publish(ProductAddedToShoppingCartEvent(
+            shoppingCartId = shoppingCartId,
+            productId = productId
+        )) }
     }
 })
