@@ -10,3 +10,9 @@ CREATE TABLE IF NOT EXISTS outbox(
     type TEXT NOT NULL,
     event JSONB NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS product(
+    id UUID NOT NULL,
+    title TEXT NOT NULL,
+    price NUMERIC(12, 6) NOT NULL
+);
