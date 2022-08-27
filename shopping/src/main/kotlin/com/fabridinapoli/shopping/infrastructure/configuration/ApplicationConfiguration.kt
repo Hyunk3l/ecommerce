@@ -7,8 +7,8 @@ import com.fabridinapoli.shopping.domain.model.ProductRepository
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.database.DefaultOutboxDomainEventPublisher
 import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresOutboxRepository
+import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresShoppingCartRepository
-import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.memory.InMemoryUserRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.outbox.OutboxRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -28,7 +28,7 @@ class ApplicationConfiguration {
     fun userRepository() = InMemoryUserRepository() //TODO: implement postgres user repo
 
     @Bean
-    fun productRepository() = InMemoryProductRepository() //TODO: implement postgres product repo
+    fun productRepository(jdbcTemplate: JdbcTemplate) = PostgresProductRepository(jdbcTemplate)
 
     @Bean
     fun searchProductsService(productRepository: ProductRepository) = SearchProductsService(productRepository)
