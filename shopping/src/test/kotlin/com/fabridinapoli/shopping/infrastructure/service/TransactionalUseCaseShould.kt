@@ -108,7 +108,11 @@ class TransactionalUseCaseShould {
     class SomeUseCaseUsingDbThrowingException(private val repository: PostgresProductRepository) {
         operator fun invoke(): Either<DomainError, Unit> {
             val product = Product(ProductId.from(UUID.randomUUID()), Title.from("aaa"), Price.from(10.0))
-            repository.save(listOf(product, product))
+            try {
+                repository.save(listOf(product, product))
+            } catch (exception: Exception) {
+                return DomainError("error").left()
+            }
             return Unit.right()
         }
     }
