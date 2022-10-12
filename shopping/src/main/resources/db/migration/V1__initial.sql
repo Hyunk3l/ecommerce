@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS outbox(
 );
 
 CREATE TABLE IF NOT EXISTS product(
-    id UUID NOT NULL,
+    id UUID unique NOT NULL,
     title TEXT NOT NULL,
     price NUMERIC(12, 6) NOT NULL
 );
