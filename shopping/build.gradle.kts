@@ -48,7 +48,7 @@ dependencies {
 	testImplementation("io.rest-assured:json-schema-validator:5.1.1")
 	testImplementation("io.mockk:mockk:1.12.5")
 	testImplementation("com.ninja-squad:springmockk:3.1.1")
-	testImplementation("net.java.dev.jna:jna:5.12.1")
+	testImplementation("net.java.dev.jna:jna:5.13.0")
 }
 
 tasks.withType<KotlinCompile> {
