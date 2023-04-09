@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.7.2"
+	id("org.springframework.boot") version "3.0.5"
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
-	kotlin("jvm") version "1.7.10"
-	kotlin("plugin.spring") version "1.7.10"
+	kotlin("jvm") version "1.8.20"
+	kotlin("plugin.spring") version "1.8.20"
 }
 
 group = "com.fabridinapoli"
@@ -26,8 +26,8 @@ dependencies {
 	implementation("org.apache.kafka:kafka-streams:3.1.0")
 	implementation("io.arrow-kt:arrow-core:1.0.1")
 	implementation("org.flywaydb:flyway-core")
-	implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
-	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10")
+	implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.20")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.4")
 	implementation("org.postgresql:postgresql")
     implementation("org.springframework:spring-tx:5.3.23")
