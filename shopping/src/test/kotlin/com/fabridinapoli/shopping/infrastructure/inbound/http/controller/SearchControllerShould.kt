@@ -6,7 +6,8 @@ import com.fabridinapoli.shopping.application.service.SearchProductsResponse
 import com.fabridinapoli.shopping.application.service.SearchProductsService
 import com.fabridinapoli.shopping.domain.model.DomainError
 import com.ninjasquad.springmockk.MockkBean
-import io.kotest.assertions.json.CompareOrder
+import io.kotest.assertions.json.CompareJsonOptions
+import io.kotest.assertions.json.PropertyOrder
 import io.kotest.assertions.json.shouldEqualJson
 import io.mockk.every
 import java.util.UUID
@@ -58,7 +59,7 @@ class SearchControllerShould(@Autowired val webTestClient: WebTestClient) {
                         ${searchProductsResponse.products[1].toJson()}
                     ]
                 }
-            """.trimIndent(), CompareOrder.Lenient)
+            """.trimIndent(), CompareJsonOptions(PropertyOrder.Lenient))
     }
 
     @Test
