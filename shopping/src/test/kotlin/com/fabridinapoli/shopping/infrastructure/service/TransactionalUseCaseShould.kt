@@ -9,8 +9,6 @@ import com.fabridinapoli.shopping.domain.model.Price
 import com.fabridinapoli.shopping.domain.model.Product
 import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.Title
-import com.fabridinapoli.shopping.domain.model.User
-import com.fabridinapoli.shopping.domain.model.UserId
 import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresProductRepository
 import com.fabridinapoli.shopping.infrastructure.outbound.database.PostgresUserRepository
 import io.kotest.matchers.shouldBe
@@ -119,7 +117,7 @@ class TransactionalUseCaseShould {
 
     class SomeUseCaseUsingDbReturningDomainError(private val repository: PostgresUserRepository) {
         operator fun invoke(): Either<DomainError, Unit> {
-            return repository.saveEither(User(UserId.from(UUID.randomUUID().toString())))
+            return repository.saveEither()
         }
     }
 }

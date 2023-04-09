@@ -10,17 +10,20 @@ import org.springframework.jdbc.core.JdbcTemplate
 
 class PostgresUserRepository(private val jdbcTemplate: JdbcTemplate) : UserRepository {
     override fun save(user: User) {
-        jdbcTemplate.update("""
+        jdbcTemplate.update(
+            """
             INSERT INTO users VALUES('a', 'b', 'c')
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
-
-    fun saveEither(user: User): Either<DomainError, Unit> {
+    fun saveEither(): Either<DomainError, Unit> {
         return try {
-            jdbcTemplate.update("""
+            jdbcTemplate.update(
+                """
                     INSERT INTO users VALUES('a', 'b', 'c')
-                """.trimIndent())
+                """.trimIndent()
+            )
             Unit.right()
         } catch (exception: Exception) {
             DomainError(message = "Database error").left()

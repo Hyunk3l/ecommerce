@@ -6,8 +6,6 @@ import com.fabridinapoli.shopping.domain.model.Price
 import com.fabridinapoli.shopping.domain.model.Product
 import com.fabridinapoli.shopping.domain.model.ProductId
 import com.fabridinapoli.shopping.domain.model.Title
-import com.fabridinapoli.shopping.domain.model.User
-import com.fabridinapoli.shopping.domain.model.UserId
 import io.kotest.matchers.shouldBe
 import java.util.UUID
 import org.junit.jupiter.api.Test
@@ -40,7 +38,7 @@ class PostgresUserRepositoryShould {
         transactionTemplate.execute {
             productRepository.save(listOf(product))
             repository
-                .saveEither(user = User(UserId(UUID.randomUUID())))
+                .saveEither()
                 .mapLeft { transactionManager.rollback(transactionStatus) }
         }
 
