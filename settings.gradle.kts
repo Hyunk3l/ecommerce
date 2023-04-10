@@ -9,7 +9,7 @@ pluginManagement {
 }
 
 include("acquisition")
-include("inventory")
+include("warehouse")
 include("notification")
 include("payment")
 include("order")

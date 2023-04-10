@@ -1,4 +1,4 @@
-package com.fabridinapoli.inventory
+package com.fabridinapoli.warehouse
 
 class Hello {
     val greeting: String
