@@ -10,7 +10,7 @@ import org.testcontainers.utility.DockerImageName
 class DatabaseContainer {
 
     val postgresContainer: PostgreSQLContainer<*> = PostgreSQLContainer(DockerImageName.parse("postgres:14.1"))
-        .withDatabaseName("somedatabasename")
+        .withDatabaseName("shopping")
         .withUsername("postgres")
         .withPassword("postgres")
         .also{ it.start() }

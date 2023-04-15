@@ -2,12 +2,12 @@ spring:
   application:
     name: Shopping
   datasource:
-    url: jdbc:postgresql://localhost:5432/somedatabasename
+    url: jdbc:postgresql://localhost:5432/shopping
     username: postgres
     password: postgres
     driverClassName: org.postgresql.Driver
   flyway:
-    url: jdbc:postgresql://localhost:5432/somedatabasename
+    url: jdbc:postgresql://localhost:5432/shopping
     schemas: public
     user: postgres
     password: postgres
