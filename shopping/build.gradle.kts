@@ -27,7 +27,7 @@ dependencies {
     implementation("io.arrow-kt:arrow-core:1.1.5")
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.2")
     implementation("org.postgresql:postgresql")
     implementation("org.springframework:spring-tx:6.0.10")
