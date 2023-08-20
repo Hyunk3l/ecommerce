@@ -37,6 +37,17 @@ class PostgresShoppingCartRepositoryShould {
     }
 
     @Test
+    fun `save multiple new shopping carts`() {
+        val firstShoppingCart = buildShoppingCart()
+        val secondShoppingCart = buildShoppingCart()
+
+        repository.saveMultiple(listOf(firstShoppingCart, secondShoppingCart))
+
+        firstShoppingCart shouldBe repository.findOrNew(firstShoppingCart.id, firstShoppingCart.userId)
+        secondShoppingCart shouldBe repository.findOrNew(secondShoppingCart.id, secondShoppingCart.userId)
+    }
+
+    @Test
     fun `find an existing shopping cart`() {
         val shoppingCart = buildShoppingCart()
         repository.save(shoppingCart)

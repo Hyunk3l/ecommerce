@@ -10,11 +10,13 @@ import com.fabridinapoli.shopping.domain.model.ShoppingCartId
 import com.fabridinapoli.shopping.domain.model.ShoppingCartRepository
 import com.fabridinapoli.shopping.domain.model.UserId
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.util.UUID
 import org.postgresql.util.PGobject
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.jdbc.core.BatchPreparedStatementSetter
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.queryForObject
 
@@ -33,6 +35,25 @@ class PostgresShoppingCartRepository(
         } catch (exception: DuplicateKeyException) {
             DomainError("User has already one shopping cart").left()
         }
+    }
+
+    fun saveMultiple(shoppingCarts: List<ShoppingCart>) {
+        val query = """
+            INSERT INTO shopping_cart VALUES(?, ?, ?)
+        """.trimIndent()
+
+        jdbcTemplate.batchUpdate(query, object : BatchPreparedStatementSetter {
+            override fun setValues(ps: PreparedStatement, i: Int) {
+                val shoppingCart = shoppingCarts[i]
+                ps.setObject(1, shoppingCart.id.id)
+                ps.setObject(2, shoppingCart.userId.value)
+                ps.setObject(3, shoppingCart.toDatabaseModel())
+            }
+
+            override fun getBatchSize(): Int {
+                return shoppingCarts.size
+            }
+        })
     }
 
     override fun findOrNew(shoppingCartId: ShoppingCartId, userId: UserId): ShoppingCart {
