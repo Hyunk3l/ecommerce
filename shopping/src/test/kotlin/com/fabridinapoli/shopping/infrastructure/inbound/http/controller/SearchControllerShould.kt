@@ -9,6 +9,7 @@ import com.ninjasquad.springmockk.MockkBean
 import io.kotest.assertions.json.CompareJsonOptions
 import io.kotest.assertions.json.PropertyOrder
 import io.kotest.assertions.json.shouldEqualJson
+import io.kotest.assertions.json.shouldEqualSpecifiedJson
 import io.mockk.every
 import java.util.UUID
 import org.junit.jupiter.api.Tag
@@ -52,14 +53,14 @@ class SearchControllerShould(@Autowired val webTestClient: WebTestClient) {
             .expectStatus()
             .isOk
             .expectBody<String>()
-            .returnResult().responseBody!!.shouldEqualJson("""
+            .returnResult().responseBody!!.shouldEqualSpecifiedJson("""
                 {
                     "products": [
                         ${searchProductsResponse.products[0].toJson()},
                         ${searchProductsResponse.products[1].toJson()}
                     ]
                 }
-            """.trimIndent(), CompareJsonOptions(PropertyOrder.Lenient))
+            """.trimIndent())
     }
 
     @Test
