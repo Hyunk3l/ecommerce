@@ -36,9 +36,9 @@ dependencies {
         exclude(module = "mockito-core")
     }
     testImplementation("io.projectreactor:reactor-test:3.6.0")
-    testImplementation("org.testcontainers:testcontainers:1.19.2")
+    testImplementation("org.testcontainers:testcontainers:1.19.3")
     testImplementation("org.testcontainers:junit-jupiter:1.19.3")
-    testImplementation("org.testcontainers:postgresql:1.19.2")
+    testImplementation("org.testcontainers:postgresql:1.19.3")
     testImplementation("io.kotest:kotest-assertions-core-jvm:5.8.0")
     testImplementation("io.kotest:kotest-assertions-json:5.8.0")
     testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
