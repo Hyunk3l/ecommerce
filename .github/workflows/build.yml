@@ -27,7 +27,7 @@ jobs:
         run: ./gradlew build
 
       - name: Gradle Dependency Submission
-        uses: mikepenz/gradle-dependency-submission@v0.9.2
+        uses: mikepenz/gradle-dependency-submission@v1.0.0
 
   dependabot:
     runs-on: ubuntu-latest
