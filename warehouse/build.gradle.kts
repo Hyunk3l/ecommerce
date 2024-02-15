@@ -28,7 +28,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.22")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.8.0")
     implementation("org.postgresql:postgresql")
     implementation("org.springframework:spring-tx:6.1.4")
 
