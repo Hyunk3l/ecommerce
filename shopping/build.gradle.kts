@@ -21,7 +21,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.19.0")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.3")
     implementation("org.apache.kafka:kafka-streams:4.0.0")
     implementation("io.arrow-kt:arrow-core:2.1.0")
