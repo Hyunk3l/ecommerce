@@ -23,7 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.21.0")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.0")
-    implementation("org.apache.kafka:kafka-streams:4.1.1")
+    implementation("org.apache.kafka:kafka-streams:4.2.0")
     implementation("io.arrow-kt:arrow-core:2.2.1.1")
     implementation("org.flywaydb:flyway-core:11.20.3")
     implementation("org.flywaydb:flyway-database-postgresql:11.20.3")
