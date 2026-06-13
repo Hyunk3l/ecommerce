@@ -1,10 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.springframework.boot") version "3.5.8"
+    id("org.springframework.boot") version "4.1.0"
     id("io.spring.dependency-management") version "1.1.7"
-    kotlin("jvm") version "2.1.21"
-    kotlin("plugin.spring") version "2.1.21"
+    kotlin("jvm") version "2.4.0"
+    kotlin("plugin.spring") version "2.4.0"
 }
 
 group = "com.fabridinapoli.shopping"
@@ -25,10 +26,10 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.1")
     implementation("org.apache.kafka:kafka-streams:4.3.0")
     implementation("io.arrow-kt:arrow-core:2.2.3")
-    implementation("org.flywaydb:flyway-core:11.20.3")
-    implementation("org.flywaydb:flyway-database-postgresql:11.20.3")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.2.21")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.2.21")
+    implementation("org.flywaydb:flyway-core:12.8.1")
+    implementation("org.flywaydb:flyway-database-postgresql:12.8.1")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.4.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
     implementation("org.postgresql:postgresql")
     implementation("org.springframework:spring-tx:7.0.8")
@@ -36,26 +37,27 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
     }
-    testImplementation("io.projectreactor:reactor-test:3.8.5")
+    testImplementation("org.springframework.boot:spring-boot-webflux-test")
+    testImplementation("io.projectreactor:reactor-test:3.8.6")
     testImplementation("org.testcontainers:testcontainers:1.21.4")
     testImplementation("org.testcontainers:junit-jupiter:1.21.4")
     testImplementation("org.testcontainers:postgresql:1.21.4")
     testImplementation("io.kotest:kotest-assertions-core-jvm:6.1.11")
     testImplementation("io.kotest:kotest-assertions-json:6.1.11")
     testImplementation("io.kotest:kotest-runner-junit5:6.1.11")
-    testImplementation("io.rest-assured:rest-assured:5.5.6")
-    testImplementation("io.rest-assured:json-path:5.5.6")
-    testImplementation("io.rest-assured:xml-path:5.5.6")
-    testImplementation("io.rest-assured:json-schema-validator:5.5.6")
+    testImplementation("io.rest-assured:rest-assured:6.0.0")
+    testImplementation("io.rest-assured:json-path:6.0.0")
+    testImplementation("io.rest-assured:xml-path:6.0.0")
+    testImplementation("io.rest-assured:json-schema-validator:6.0.0")
     testImplementation("io.mockk:mockk:1.14.11")
     testImplementation("com.ninja-squad:springmockk:5.0.1")
     testImplementation("net.java.dev.jna:jna:5.19.0")
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "17"
+    compilerOptions {
+        freeCompilerArgs.add("-Xjsr305=strict")
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 
