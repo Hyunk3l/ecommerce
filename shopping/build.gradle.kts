@@ -38,7 +38,7 @@ dependencies {
         exclude(module = "mockito-core")
     }
     testImplementation("org.springframework.boot:spring-boot-webflux-test")
-    testImplementation("io.projectreactor:reactor-test:3.8.6")
+    testImplementation("io.projectreactor:reactor-test:3.8.7")
     testImplementation("org.testcontainers:testcontainers:1.21.4")
     testImplementation("org.testcontainers:junit-jupiter:1.21.4")
     testImplementation("org.testcontainers:postgresql:1.21.4")
