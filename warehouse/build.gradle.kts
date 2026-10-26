@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
     implementation("org.postgresql:postgresql")
-    implementation("org.springframework:spring-tx:7.0.9")
+    implementation("org.springframework:spring-tx:7.0.10")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(module = "mockito-core")
