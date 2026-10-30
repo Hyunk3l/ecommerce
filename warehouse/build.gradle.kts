@@ -25,7 +25,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.22.4")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.3.3")
     implementation("org.apache.kafka:kafka-streams:4.4.0")
-    implementation("io.arrow-kt:arrow-core:2.2.3")
+    implementation("io.arrow-kt:arrow-core:2.3.0.1")
     implementation("org.flywaydb:flyway-core:13.11.1")
     implementation("org.flywaydb:flyway-database-postgresql:13.11.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.4.21")
