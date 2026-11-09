@@ -27,7 +27,7 @@ dependencies {
     implementation("org.apache.kafka:kafka-streams:4.4.0")
     implementation("io.arrow-kt:arrow-core:2.3.0.1")
     implementation("org.flywaydb:flyway-core:13.12.1")
-    implementation("org.flywaydb:flyway-database-postgresql:13.12.0")
+    implementation("org.flywaydb:flyway-database-postgresql:13.12.1")
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.4.21")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.4.21")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.11.0")
